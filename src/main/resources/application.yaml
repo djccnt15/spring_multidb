@@ -1,3 +1,25 @@
 spring:
   application:
     name: spring_multidb
+  jpa:
+    show-sql: true  # simple stdout sql to console
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comment: true
+        jdbc:
+          time_zone: Asia/Seoul
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    primary:
+      jdbc-url: jdbc:sqlite:./embedded.db
+      driver-class-name: org.sqlite.JDBC
+    secondary:
+      jdbc-url: jdbc:postgresql://localhost:5432/secondary
+      username: {DATABASE_USERNAME}
+      password: {DATABASE_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        maximum-pool-size: 10
