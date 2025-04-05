@@ -2,14 +2,18 @@ package com.djccnt15.spring_multidb.db.primary.entity;
 
 import com.djccnt15.spring_multidb.db.primary.entity.converter.LocalDateTimeConverter;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "user_account")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserEntity {
     

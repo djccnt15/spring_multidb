@@ -1,4 +1,4 @@
-package com.djccnt15.spring_multidb.configuration.db;
+package com.djccnt15.spring_multidb.config.db;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,33 +19,36 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    basePackages = "com.djccnt15.spring_multidb.db.secondary.repository",
-    entityManagerFactoryRef = "secondaryEntityManagerFactory",
-    transactionManagerRef = "secondaryTransactionManager"
+    basePackages = "com.djccnt15.spring_multidb.db.primary.repository",
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
 )
-public class SecondaryDatabaseConfig {
+public class PrimaryDbConfig {
     
+    @Primary
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.secondary")
-    public DataSource secondaryDataSource() {
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    public DataSource primaryDataSource() {
         return DataSourceBuilder.create().build();
     }
     
+    @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
         EntityManagerFactoryBuilder builder,
-        @Qualifier("secondaryDataSource") DataSource dataSource
+        @Qualifier("primaryDataSource") DataSource dataSource
     ) {
         return builder
             .dataSource(dataSource)
-            .packages("com.djccnt15.spring_multidb.db.secondary.entity")
-            .persistenceUnit("secondary")
+            .packages("com.djccnt15.spring_multidb.db.primary.entity")
+            .persistenceUnit("primary")
             .build();
     }
     
+    @Primary
     @Bean
-    public PlatformTransactionManager secondaryTransactionManager(
-        @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager primaryTransactionManager(
+        @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 }
