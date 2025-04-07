@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 @Converter
 public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, String> {
+    
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
     @Override
