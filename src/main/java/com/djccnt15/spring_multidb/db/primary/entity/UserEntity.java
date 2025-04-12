@@ -28,7 +28,7 @@ public class UserEntity {
     @Column(name = "fullname")
     private String fullName;
     
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createdAt;
