@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class PrimaryService {
     private final UserRepository repository;
     private final PrimaryConverter converter;
     
+    @Transactional("primaryTransactionManager")
     public UserModel createUser(UserRequest request) {
         var entity = converter.toEntity(request);
         var user = repository.save(entity);
