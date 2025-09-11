@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -44,8 +43,8 @@ public class PrimaryService {
     public UserModel updateUser(Integer id, UserRequest request) {
         var entity = repository.findById(id)
             .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "No User"));
-        Optional.ofNullable(request.getName()).ifPresent(entity::setName);
-        Optional.ofNullable(request.getFullName()).ifPresent(entity::setFullName);
+        entity.setName(request.getName());
+        entity.setFullName(request.getFullName());
         var user = repository.save(entity);
         return converter.toResponse(user);
     }
